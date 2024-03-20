@@ -1,10 +1,10 @@
 # CSV price matcher
 
 ![js](https://img.shields.io/badge/JavaScript-ECMAScript%202023-blue)
-![npm](https://img.shields.io/badge/npm-8.19.3-blue)
+![npm](https://img.shields.io/badge/npm-10.0.0-blue)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/pedro-mealha/csv-price-matcher/graphs/commit-activity)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/affa3c9f-aff1-4f60-bbd3-0ace725bf778/deploy-status)](https://app.netlify.com/sites/csv-price-matcher/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e0b409be-618e-4df4-a697-fc38ff851cce/deploy-status)](https://app.netlify.com/sites/csv-price-matcher/deploys)
 
 ***Live URL:*** <https://price-matcher.app.pedromealha.dev>
 
