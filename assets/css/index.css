@@ -1,0 +1,163 @@
+html {
+  min-height: 100%;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  background-color: #f1f1f1;
+  color: white;
+}
+
+#start-upload-btn {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.5rem;
+  color: rgb(36 36 38);
+  text-transform: uppercase;
+  border: 0 solid;
+  border-color: rgb(36 36 38);
+  border-radius: 99999px;
+  border-width: 2px;
+  background: transparent;
+  width: 100%;
+  padding: .75rem 2rem;
+  transition: color 0.2s ease-in-out;
+}
+
+#old-csv-uploaded {
+  border-color: rgb(142 142 147);
+  color: rgb(142 142 147);
+}
+
+#new-csv-uploaded:hover {
+  cursor: pointer;
+  border-color: rgb(142 142 147);
+  color: rgb(142 142 147);
+}
+
+.uploaded-file {
+  color: rgb(36 36 38);
+  border: 2px solid;
+  border-radius: 11px;
+  padding: 15px 15px 0;
+  text-align: center;
+}
+
+.uploaded-file p {
+  position: relative;
+  margin-left: 5px;
+  margin-top: 15px;
+}
+
+#start-upload-btn:hover {
+  border-color: rgb(142 142 147);
+  color: rgb(142 142 147);
+}
+
+#content {
+  color: rgb(36 36 38);
+  margin: 2% 9% 5%;
+  display: none;
+}
+
+.center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+
+.thead-light th {
+  color: #373a3c;
+  background-color: #fff;
+}
+
+.table-rounded {
+  overflow: hidden;
+  padding: 0;
+  border-color: #373b3e;
+  border-radius: 11px;
+}
+
+#products-table {
+  width: 50% !important;
+  font-family: "Open Sans", sans-serif;
+  color: rgb(36 36 38);
+  margin-bottom: 0;
+}
+
+.apple-logo {
+  opacity: 0.5;
+}
+
+.loading {
+  color: rgb(36 36 38);
+  animation: blinker 1.5s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+footer {
+  width: 100%;
+  text-align: center;
+  font-size: 0.8em;
+  padding-bottom: 1%;
+  color: rgb(36 36 38);
+}
+
+footer .github-link {
+  background: linear-gradient(45deg, #f00, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #f00);
+  background-size: 200% 200%;
+  animation: rainbow 2s ease-in-out infinite;
+  background-clip: text;
+  transition: color 0.2s ease-in-out;
+}
+
+footer .github-link:link,
+footer .github-link:visited {
+  text-decoration: underline;
+  color: rgb(36 36 38);
+}
+
+footer .github-link:hover {
+  color: rgb(0 0 0 / 0%);
+}
+
+@keyframes rainbow {
+  0% { background-position: left; }
+  50% { background-position: right; }
+  100% { background-position: left; }
+}
+
+/* Rules for sizing the icon. */
+.material-icons.md-14 { font-size: 14px; }
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark { color: rgb(0 0 0 / 54%); }
+.material-icons.md-dark.md-inactive { color: rgb(0 0 0 / 26%); }
+
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light { color: rgb(255 255 255 / 100%); }
+.material-icons.md-light.md-inactive { color: rgb(255 255 255 / 30%); }
+
+.animate-validate {
+  animation: full-spin 1.2s linear infinite;
+}
+
+@keyframes full-spin {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}

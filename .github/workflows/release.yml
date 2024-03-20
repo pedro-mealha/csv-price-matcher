@@ -1,0 +1,35 @@
+name: Release
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install netlify-cli
+        run: npm install netlify-cli -g
+
+      - name: Get deploy ID
+        id: get-deploy-id
+        run: |
+          ID=$(netlify api listSiteDeploys --data '{ "site_id": "${{ secrets.NETLIFY_SITE_ID }}", "page": 1, "per_page": 1}' | head -n 3 | tr '{' '\n' | tr , '\n' | tr '}' '\n' | grep "id" | awk  -F'"' '{print $4}')
+          echo "DEPLOY_ID=$ID" >> "$GITHUB_OUTPUT"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+
+      - name: Publish
+        run: |
+          netlify api restoreSiteDeploy --data '{ "site_id": "${{ secrets.NETLIFY_SITE_ID }}", "deploy_id": "${{ steps.get-deploy-id.outputs.DEPLOY_ID }}" }'
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
