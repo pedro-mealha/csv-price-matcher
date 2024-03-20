@@ -14,6 +14,7 @@ let newCsvData;
 window.onload = () => {
   const oldCsvInput = document.createElement('input');
   oldCsvInput.type = 'file';
+  oldCsvInput.accept = '.csv';
 
   const newCsvInput = document.createElement('input');
   newCsvInput.type = 'file';
@@ -95,13 +96,14 @@ window.onload = () => {
     }
 
     for (const row of newCsvData) {
-      if (row[PRODUCT_PRICING_OPTION_INDEX] === EXCHANGE_PRICE) {
+      const { id, index } = getProductBasicDetails(row);
+
+      if (!id || row[PRODUCT_PRICING_OPTION_INDEX] === EXCHANGE_PRICE) {
         continue;
       }
 
-      const { id, index } = getProductBasicDetails(row);
-
-      if (!id) {
+      if (products[index].oldPrice === row[PRODUCT_PRICE_INDEX]) {
+        delete products[index];
         continue;
       }
 
