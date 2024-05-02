@@ -92,22 +92,37 @@ window.onload = () => {
         continue;
       }
 
-      products[index] = { id, name, oldPrice: row[PRODUCT_PRICE_INDEX] };
+      products[index] = { id, name, oldPrice: parseFloat(row[PRODUCT_PRICE_INDEX]) };
     }
 
     for (const row of newCsvData) {
-      const { id, index } = getProductBasicDetails(row);
+      const { id, name, index } = getProductBasicDetails(row);
+      const newPrice = parseFloat(row[PRODUCT_PRICE_INDEX]);
 
       if (!id || row[PRODUCT_PRICING_OPTION_INDEX] === EXCHANGE_PRICE) {
         continue;
       }
 
-      if (products[index].oldPrice === row[PRODUCT_PRICE_INDEX]) {
+      if (!products[index]) {
+        products[index] = { id, name, oldPrice: null, newPrice };
+        continue;
+      }
+
+      if (products[index].oldPrice === newPrice) {
         delete products[index];
         continue;
       }
 
-      products[index].newPrice = row[PRODUCT_PRICE_INDEX];
+      products[index].newPrice = newPrice;
+    }
+
+    for (const product of Object.values(products)) {
+      const index = `${product.name} ${product.id}`;
+
+      if (!product.newPrice || (!product.oldPrice && product.oldPrice !== null)) {
+        delete products[index];
+        continue;
+      }
     }
 
     return Object.values(products);
