@@ -3,10 +3,12 @@ import { CSVToArray } from './parseCsv.js';
 
 const PRODUCT_NAME_INDEX = 0;
 const PRODUCT_ID_INDEX = 1;
+const PRODUCT_DESCRIPTION_INDEX = 3;
 const PRODUCT_PRICING_OPTION_INDEX = 7;
 const PRODUCT_PRICE_INDEX = 8;
 
 const EXCHANGE_PRICE = "Exchange Price";
+const BATTERY_ONLY_PRICE = "Battery Only Price";
 
 let oldCsvData;
 let newCsvData;
@@ -76,50 +78,22 @@ window.onload = () => {
   }
 
   function buildData(oldCsvData, newCsvData) {
-    const products = [];
-
     oldCsvData.shift(); // remove headers
     newCsvData.shift(); // remove headers
 
-    for (const row of oldCsvData) {
-      if (row[PRODUCT_PRICING_OPTION_INDEX] === EXCHANGE_PRICE) {
-        continue;
-      }
-
-      const { id, name, index } = getProductBasicDetails(row);
-
-      if (!id) {
-        continue;
-      }
-
-      products[index] = { id, name, oldPrice: parseFloat(row[PRODUCT_PRICE_INDEX]) };
-    }
-
-    for (const row of newCsvData) {
-      const { id, name, index } = getProductBasicDetails(row);
-      const newPrice = parseFloat(row[PRODUCT_PRICE_INDEX]);
-
-      if (!id || row[PRODUCT_PRICING_OPTION_INDEX] === EXCHANGE_PRICE) {
-        continue;
-      }
-
-      if (!products[index]) {
-        products[index] = { id, name, oldPrice: null, newPrice };
-        continue;
-      }
-
-      if (products[index].oldPrice === newPrice) {
-        delete products[index];
-        continue;
-      }
-
-      products[index].newPrice = newPrice;
-    }
+    let products = parseCsvRows(oldCsvData);
+    products = parseCsvRows(newCsvData, products, false);
 
     for (const product of Object.values(products)) {
-      const index = `${product.name} ${product.id}`;
+      const index = `${product.name} ${product.id} ${product.priceType}`;
 
-      if (!product.newPrice || (!product.oldPrice && product.oldPrice !== null)) {
+      product.oldPrice = product.oldPrice ?? null;
+      product.newPrice = product.newPrice ?? null;
+
+      const priceSameOrInvalid = (!product.oldPrice && product.oldPrice !== null && !product.newPrice && product.newPrice !== null) || (product.oldPrice === product.newPrice);
+      const removed = product.newPrice === null;
+
+      if (priceSameOrInvalid || removed) {
         delete products[index];
         continue;
       }
@@ -128,11 +102,31 @@ window.onload = () => {
     return Object.values(products);
   }
 
+  function parseCsvRows(rows, products = [], oldCsv = true) {
+    const priceField = oldCsv ? 'oldPrice' : 'newPrice';
+
+    for (const row of rows) {
+      const { id, name, description, price, priceOption, index } = getProductBasicDetails(row);
+
+      if (!id || (priceOption !== EXCHANGE_PRICE && priceOption !== BATTERY_ONLY_PRICE)) {
+        continue;
+      }
+
+      products[index] = { id, name, description, priceType: priceOption,  ...products[index] };
+      products[index][priceField] = price;
+    }
+
+    return products;
+  }
+
   function getProductBasicDetails(row) {
     const id = row[PRODUCT_ID_INDEX];
     const name = row[PRODUCT_NAME_INDEX];
-    const index = `${name} ${id}`;
+    const description = row[PRODUCT_DESCRIPTION_INDEX];
+    const priceOption = row[PRODUCT_PRICING_OPTION_INDEX];
+    const price = parseFloat(row[PRODUCT_PRICE_INDEX]);
+    const index = `${name} ${id} ${priceOption}`;
 
-    return { id, name, index };
+    return { id, name, description, priceOption, price, index };
   }
 };
